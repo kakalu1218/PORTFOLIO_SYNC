@@ -9,21 +9,24 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
+using Server.Game;
 using ServerCore;
 
 namespace Server
 {
-	class Program
+    public class Program
 	{
-		static Listener _listener = new Listener();
+		private static Listener _listener = new Listener();
 
-		static void FlushRoom()
+		private static void FlushRoom()
 		{
 			JobTimer.Instance.Push(FlushRoom, 250);
 		}
 
-		static void Main(string[] args)
+        public static void Main(string[] args)
 		{
+			RoomManager.Instance.Add();
+
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
