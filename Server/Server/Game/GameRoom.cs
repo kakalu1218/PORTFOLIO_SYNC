@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Google.Protobuf;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -62,7 +63,7 @@ namespace Server.Game
             lock (_lock)
             {
                 Player leavePlayer = _players.Find(leavePlayer => leavePlayer.Info.PlayerId == playerId);
-                if (leavePlayer != null)
+                if (leavePlayer == null)
                 {
                     return;
                 }
@@ -87,6 +88,17 @@ namespace Server.Game
                             player.Session.Send(despawnPacket);
                         }
                     }
+                }
+            }
+        }
+        
+        public void Broadcast(IMessage packet)
+        {
+            lock ( _lock)
+            {
+                foreach (Player player in _players)
+                {
+                    player.Session.Send(packet);
                 }
             }
         }

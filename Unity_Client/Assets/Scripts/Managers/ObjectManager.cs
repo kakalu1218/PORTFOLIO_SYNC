@@ -16,27 +16,24 @@ public class ObjectManager
         {
             GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/MyPlayer");
             gameObject.name = info.Name;
-            gameObject.transform.position = new Vector3(info.PosX, info.PosY, info.PosZ);
+            gameObject.transform.position = new Vector3(info.Position.X, info.Position.Y, info.Position.Z);
             _objects.Add(info.PlayerId, gameObject);
 
             MyPlayerController = gameObject.GetComponent<MyPlayerController>();
             MyPlayerController.Id = info.PlayerId;
+            MyPlayerController.State = info.State;
         }
         else
         {
             GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/Player");
             gameObject.name = info.Name;
-            gameObject.transform.position = new Vector3(info.PosX, info.PosY, info.PosZ);
+            gameObject.transform.position = new Vector3(info.Position.X, info.Position.Y, info.Position.Z);
             _objects.Add(info.PlayerId, gameObject);
 
             PlayerController playerController = gameObject.GetComponent<PlayerController>();
             playerController.Id = info.PlayerId;
+            playerController.State = info.State;
         }
-    }
-
-    public void Add(int id, GameObject gameObject)
-    {
-        _objects.Add(id, gameObject);
     }
 
     public void RemoveMyPlayer()
@@ -52,16 +49,30 @@ public class ObjectManager
 
     public void Remove(int id)
     {
+        GameObject gameObject = FindById(id);
+        if (gameObject == null)
+        {
+            return;
+        }
+
         _objects.Remove(id);
+        Managers.Resource.Destroy(gameObject);
+    }
+
+    public GameObject FindById(int id)
+    {
+        GameObject gameObject = null;
+        _objects.TryGetValue(id, out gameObject);
+        return gameObject;
     }
 
     public GameObject Find(Func<GameObject, bool> condition)
     {
-        foreach (GameObject obj in _objects.Values)
+        foreach (GameObject gameObject in _objects.Values)
         {
-            if (condition.Invoke(obj))
-            { 
-                return obj;
+            if (condition.Invoke(gameObject))
+            {
+                return gameObject;
             }
         }
 
@@ -70,6 +81,11 @@ public class ObjectManager
 
     public void Clear()
     {
+        foreach (GameObject gameObject in _objects.Values)
+        {
+            Managers.Resource.Destroy(gameObject);
+        }
+
         _objects.Clear();
     }
 }

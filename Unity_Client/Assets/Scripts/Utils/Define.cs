@@ -9,11 +9,4 @@ public class Define
         Unknown,
         Game,
     }
-
-    public enum ObjectState
-    {
-        None,
-        Idle,
-        Moving,
-    }
 }

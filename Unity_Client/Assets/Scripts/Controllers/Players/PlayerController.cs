@@ -1,10 +1,11 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : BaseController
 {
-    protected override Define.ObjectState State
+    public override ObjectState State
     {
         get
         {
@@ -22,12 +23,12 @@ public class PlayerController : BaseController
 
             switch (_state)
             {
-                case Define.ObjectState.Idle:
-                    //_animator.CrossFade("IDLE", 0.1f);
+                case ObjectState.Idle:
+                    _animator.CrossFade("Idle01", 0.1f);
                     break;
 
-                case Define.ObjectState.Moving:
-                    //_animator.CrossFade("MOVE", 0.1f);
+                case ObjectState.Moving:
+                    _animator.CrossFade("Run", 0.1f);
                     break;
             }
         }

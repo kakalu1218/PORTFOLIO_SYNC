@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,27 @@ public class BaseController : MonoBehaviour
 {
     public int Id { get; set; }
 
-    //protected Animator _animator;
+    protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
-    protected Vector3 _desPoint;
 
-    protected Define.ObjectState _state;
-    protected virtual Define.ObjectState State
+    protected Vector3 _destination;
+    public Vector3 Destination
+    {
+        get
+        {
+            return _destination;
+        }
+        
+        set
+        {
+            _destination = value;
+            State = ObjectState.Moving;
+            _navMeshAgent.destination = _destination;
+        }
+    }
+
+    protected ObjectState _state;
+    public virtual ObjectState State
     {
         get
         {
@@ -30,6 +46,8 @@ public class BaseController : MonoBehaviour
         }
     }
 
+    private const float ARRIVAL_THRESHOLD = 0.5f;
+
     private void Start()
     {
         Init();
@@ -42,7 +60,7 @@ public class BaseController : MonoBehaviour
 
     protected virtual void Init()
     {
-        //_animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -50,10 +68,10 @@ public class BaseController : MonoBehaviour
     {
         switch (State)
         {
-            case Define.ObjectState.Idle:
+            case ObjectState.Idle:
                 UpdateIdle();
                 break;
-            case Define.ObjectState.Moving:
+            case ObjectState.Moving:
                 UpdateMoving();
                 break;
         }
@@ -61,11 +79,15 @@ public class BaseController : MonoBehaviour
 
     protected virtual void UpdateIdle()
     {
-        _navMeshAgent.destination = transform.position;
+        //_navMeshAgent.destination = transform.position;
     }
 
     protected virtual void UpdateMoving()
     {
-        _navMeshAgent.destination = _desPoint;
+        float distanceToTarget = Vector3.Distance(transform.position, _destination);
+        if (distanceToTarget <= ARRIVAL_THRESHOLD)
+        {
+            State = ObjectState.Idle;
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Net;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
 using Server.Game;
+using System.Numerics;
 
 namespace Server
 {
@@ -39,9 +40,13 @@ namespace Server
             MyPlayer = PlayerManager.Instance.Add();
             {
                 MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}";
-                MyPlayer.Info.PosX = 0.0f;
-                MyPlayer.Info.PosY = 0.0f;
-                MyPlayer.Info.PosZ = 0.0f;
+                MyPlayer.Info.State = ObjectState.Idle;
+                MyPlayer.Info.Position.X = 0.0f; 
+                MyPlayer.Info.Position.Y = 0.0f;
+                MyPlayer.Info.Position.Z = 0.0f;
+                MyPlayer.Info.Destination.X = 0.0f;
+                MyPlayer.Info.Destination.Y = 0.0f;
+                MyPlayer.Info.Destination.Z = 0.0f;
                 MyPlayer.Session = this;
             }
 

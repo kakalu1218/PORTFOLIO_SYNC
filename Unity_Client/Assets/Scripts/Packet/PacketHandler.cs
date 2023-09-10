@@ -46,6 +46,19 @@ class PacketHandler
         S_Move movePacket = packet as S_Move;
         ServerSession serverSession = session as ServerSession;
 
-        Debug.Log("S_MoveHandler");
+        GameObject gameObject =Managers.Object.FindById(movePacket.PlayerId);
+        if (gameObject == null)
+        {
+            return;
+        }
+
+        BaseController controller = gameObject.GetComponent<BaseController>();
+        if(controller == null)
+        {
+            return;
+        }
+
+
+        controller.Destination = new Vector3(movePacket.Destination.X, movePacket.Destination.Y, movePacket.Destination.Z);
     }
 }
