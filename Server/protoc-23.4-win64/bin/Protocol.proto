@@ -10,8 +10,8 @@ enum MsgId
 	S_LEAVE_GAME = 1;
 	S_SPAWN = 2;
 	S_DESPAWN = 3;
-	C_MOVE = 4;
-	S_MOVE = 5;
+	C_STATE = 4;
+	S_STATE = 5;
 }
 
 enum ObjectState
@@ -19,6 +19,34 @@ enum ObjectState
 	IDLE = 0;
 	MOVING = 1;
 	ATTACK = 2;
+	SKILL = 3;
+}
+
+message SVector3
+{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+}
+
+message StateInfo
+{
+	ObjectState state = 1;
+	SVector3 position = 2;
+	SVector3 destination = 3;
+	int32 targetId = 4;
+}
+
+message PlayerInfo
+{
+	int32 playerId = 1;
+	string name = 2;
+	StateInfo statInfo = 3;
+}
+
+message SkillInfo
+{
+	int32 skillId = 1;
 }
 
 message S_EnterGame
@@ -40,29 +68,13 @@ message S_Despawn
 	repeated int32 playerIds = 1;
 }
 
-message C_Move
+message C_State
 {
-	SVector3 destination = 1;
+	StateInfo statInfo = 1;
 }
 
-message S_Move
+message S_State
 {
 	int32 playerId = 1;
-	SVector3 destination = 2;
-}
-
-message PlayerInfo
-{
-	int32 playerId = 1;
-	string name = 2;
-	ObjectState state = 3;
-	SVector3 position = 4;
-	SVector3 destination = 5;
-}
-
-message SVector3
-{
-	float x = 1;
-	float y = 2;
-	float z = 3;
+	StateInfo statInfo = 2;
 }

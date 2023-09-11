@@ -16,23 +16,23 @@ public class ObjectManager
         {
             GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/MyPlayer");
             gameObject.name = info.Name;
-            gameObject.transform.position = new Vector3(info.Position.X, info.Position.Y, info.Position.Z);
             _objects.Add(info.PlayerId, gameObject);
 
             MyPlayerController = gameObject.GetComponent<MyPlayerController>();
             MyPlayerController.Id = info.PlayerId;
-            MyPlayerController.State = info.State;
+            MyPlayerController.StateInfo = info.StatInfo;
+            MyPlayerController.transform.position = new Vector3(info.StatInfo.Position.X, info.StatInfo.Position.Y, info.StatInfo.Position.Z);
         }
         else
         {
             GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/Player");
             gameObject.name = info.Name;
-            gameObject.transform.position = new Vector3(info.Position.X, info.Position.Y, info.Position.Z);
             _objects.Add(info.PlayerId, gameObject);
 
             PlayerController playerController = gameObject.GetComponent<PlayerController>();
             playerController.Id = info.PlayerId;
-            playerController.State = info.State;
+            playerController.StateInfo = info.StatInfo;
+            playerController.transform.position = new Vector3(info.StatInfo.Position.X, info.StatInfo.Position.Y, info.StatInfo.Position.Z);
         }
     }
 

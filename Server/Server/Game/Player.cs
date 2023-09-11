@@ -7,7 +7,7 @@ namespace Server.Game
 {
     public class Player
     {
-        public PlayerInfo Info { get; set; } = new PlayerInfo() { Position = new SVector3(), Destination = new SVector3() };
+        public PlayerInfo Info { get; set; } = new PlayerInfo() { StatInfo = new StateInfo() { Position = new SVector3(), Destination = new SVector3() } };
         public GameRoom Room { get; set; }
         public ClientSession Session { get; set; }
     }

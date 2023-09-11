@@ -40,13 +40,17 @@ namespace Server
             MyPlayer = PlayerManager.Instance.Add();
             {
                 MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}";
-                MyPlayer.Info.State = ObjectState.Idle;
-                MyPlayer.Info.Position.X = 0.0f; 
-                MyPlayer.Info.Position.Y = 0.0f;
-                MyPlayer.Info.Position.Z = 0.0f;
-                MyPlayer.Info.Destination.X = 0.0f;
-                MyPlayer.Info.Destination.Y = 0.0f;
-                MyPlayer.Info.Destination.Z = 0.0f;
+                MyPlayer.Info.StatInfo = new StateInfo();
+                MyPlayer.Info.StatInfo.State = ObjectState.Idle;
+                MyPlayer.Info.StatInfo.Position = new SVector3();
+                MyPlayer.Info.StatInfo.Position.X = 0.0f;
+                MyPlayer.Info.StatInfo.Position.Y = 0.0f;
+                MyPlayer.Info.StatInfo.Position.Z = 0.0f;
+                MyPlayer.Info.StatInfo.Destination = new SVector3();
+                MyPlayer.Info.StatInfo.Destination.X = 0.0f;
+                MyPlayer.Info.StatInfo.Destination.Y = 0.0f;
+                MyPlayer.Info.StatInfo.Destination.Z = 0.0f;
+                MyPlayer.Info.StatInfo.TargetId = -1;
                 MyPlayer.Session = this;
             }
 

@@ -41,12 +41,11 @@ class PacketHandler
         }
     }
 
-    public static void S_MoveHandler(PacketSession session, IMessage packet)
+    public static void S_StateHandler(PacketSession session, IMessage packet)
     {
-        S_Move movePacket = packet as S_Move;
-        ServerSession serverSession = session as ServerSession;
+        S_State statePacket = packet as S_State;
 
-        GameObject gameObject =Managers.Object.FindById(movePacket.PlayerId);
+        GameObject gameObject =Managers.Object.FindById(statePacket.PlayerId);
         if (gameObject == null)
         {
             return;
@@ -58,7 +57,6 @@ class PacketHandler
             return;
         }
 
-
-        controller.Destination = new Vector3(movePacket.Destination.X, movePacket.Destination.Y, movePacket.Destination.Z);
+        controller.StateInfo = statePacket.StatInfo;
     }
 }

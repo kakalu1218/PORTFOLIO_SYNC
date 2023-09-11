@@ -91,10 +91,30 @@ namespace Server.Game
                 }
             }
         }
-        
-        public void Broadcast(IMessage packet)
+
+        public void HandleState(Player myPlayer, C_State statePacket)
         {
-            lock ( _lock)
+            if (myPlayer == null)
+            {
+                return;
+            }
+
+            lock(_lock)
+            {
+                PlayerInfo info = myPlayer.Info;
+                info.StatInfo = statePacket.StatInfo;
+
+                S_State resStatePacket = new S_State();
+                resStatePacket.PlayerId = myPlayer.Info.PlayerId;
+                resStatePacket.StatInfo = statePacket.StatInfo;
+
+                Broadcast(resStatePacket);
+            }
+        }
+
+        private void Broadcast(IMessage packet)
+        {
+            lock (_lock)
             {
                 foreach (Player player in _players)
                 {

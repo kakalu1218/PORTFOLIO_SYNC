@@ -11,31 +11,33 @@ public class BaseController : MonoBehaviour
     protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
 
-    protected Vector3 _destination;
-    public Vector3 Destination
+    private StateInfo _stateInfo;
+    public StateInfo StateInfo
     {
         get
         {
-            return _destination;
+            return _stateInfo;
         }
-        
+
         set
         {
-            _destination = value;
-            State = ObjectState.Moving;
-            _navMeshAgent.destination = _destination;
+            _stateInfo = value;
+
+            State = StateInfo.State;
+            Destination = new Vector3(StateInfo.Destination.X, StateInfo.Destination.Y, StateInfo.Destination.Z);
+            Target = Managers.Object.FindById(StateInfo.TargetId);
         }
     }
 
-    protected ObjectState _state;
-    public virtual ObjectState State
+    private ObjectState _state;
+    public ObjectState State
     {
         get
         {
             return _state;
         }
 
-        set
+        private set
         {
             if (_state == value)
             {
@@ -43,10 +45,58 @@ public class BaseController : MonoBehaviour
             }
 
             _state = value;
+
+            FadeAnimation();
         }
     }
 
-    private const float ARRIVAL_THRESHOLD = 0.5f;
+    protected virtual void FadeAnimation()
+    {
+
+    }
+
+    private Vector3 _destination;
+    public Vector3 Destination
+    {
+        get
+        {
+            return _destination;
+        }
+
+        private set
+        {
+            _destination = value;
+
+            if (_navMeshAgent == null)
+            {
+                return;
+            }
+
+            _navMeshAgent.destination = _destination;
+        }
+    }
+
+    private GameObject _target;
+    public GameObject Target
+    {
+        get
+        {
+            return _target;
+        }
+
+        private set
+        {
+            if (_target == value)
+            {
+                return;
+            }
+
+            _target = value;
+        }
+    }
+
+    protected const float ARRIVAL_THRESHOLD = 0.5f;
+    protected const float ATTACK_RANGE = 2.5f;
 
     private void Start()
     {
@@ -60,7 +110,7 @@ public class BaseController : MonoBehaviour
 
     protected virtual void Init()
     {
-        _animator = GetComponentInChildren<Animator>();
+        _animator = GetComponent<Animator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -71,23 +121,38 @@ public class BaseController : MonoBehaviour
             case ObjectState.Idle:
                 UpdateIdle();
                 break;
+
             case ObjectState.Moving:
                 UpdateMoving();
+                break;
+
+            case ObjectState.Attack:
+                UpdateAttack();
+                break;
+
+            case ObjectState.Skill:
+                UpdateSkill();
                 break;
         }
     }
 
     protected virtual void UpdateIdle()
     {
-        //_navMeshAgent.destination = transform.position;
+
     }
 
     protected virtual void UpdateMoving()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, _destination);
-        if (distanceToTarget <= ARRIVAL_THRESHOLD)
-        {
-            State = ObjectState.Idle;
-        }
+        
+    }
+
+    protected virtual void UpdateAttack()
+    {
+
+    }
+
+    protected virtual void UpdateSkill()
+    {
+
     }
 }
