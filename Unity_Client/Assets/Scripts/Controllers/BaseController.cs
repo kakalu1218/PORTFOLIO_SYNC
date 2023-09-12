@@ -96,7 +96,7 @@ public class BaseController : MonoBehaviour
     }
 
     protected const float ARRIVAL_THRESHOLD = 0.5f;
-    protected const float ATTACK_RANGE = 2.5f;
+    protected const float ATTACK_RANGE = 3.0f;
 
     private void Start()
     {

@@ -30,7 +30,7 @@ public class MyPlayerController : PlayerController
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.gameObject.GetComponent<PlayerController>())
+                if (hit.collider.gameObject != gameObject && hit.collider.gameObject.GetComponent<PlayerController>())
                 {
                     StateInfo info = new StateInfo();
                     info.State = ObjectState.Moving;
@@ -72,6 +72,8 @@ public class MyPlayerController : PlayerController
 
     protected override void UpdateMoving()
     {
+        base.UpdateMoving();
+
         if (Target == null)
         {
             float distanceToTarget = Vector3.Distance(transform.position, Destination);
@@ -120,6 +122,8 @@ public class MyPlayerController : PlayerController
 
     protected override void UpdateAttack()
     {
+        base.UpdateAttack();
+
         if (Target == null)
         {
             StateInfo info = new StateInfo();
