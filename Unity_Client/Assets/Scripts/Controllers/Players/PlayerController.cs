@@ -33,20 +33,6 @@ public class PlayerController : BaseController
         }
     }
 
-    protected override void UpdateMoving()
-    {
-        if (Target != null)
-        {
-            float distanceToTarget = Vector3.Distance(transform.position, Target.transform.position);
-            if (distanceToTarget > ATTACK_RANGE)
-            {
-                // TODO :
-                // 해당 부분은 동기화 어떻게 할지 생각해보세요.
-                _navMeshAgent.destination = Target.transform.position;
-            }
-        }
-    }
-
     protected override void UpdateAttack()
     {
         if (Target != null)

@@ -21,6 +21,25 @@ public class MyPlayerController : PlayerController
         GetMouseInput();
     }
 
+    private void SetStateInfo(ObjectState state, Vector3 pos, Vector3 des, GameObject target = null, Action action = null)
+    {
+        StateInfo info = new StateInfo();
+        info.State = state;
+        info.Position = new SVector3();
+        info.Position.X = pos.x;
+        info.Position.Y = pos.y;
+        info.Position.Z = pos.z;
+        info.Destination = new SVector3();
+        info.Destination.X = des.x;
+        info.Destination.Y = des.y;
+        info.Destination.Z = des.z;
+        info.TargetId = target == null ? -1 : target.GetComponent<BaseController>().Id;
+
+        StateInfo = info;
+
+        action?.Invoke();
+    }
+
     private void GetMouseInput()
     {
         if (Input.GetMouseButtonDown(0))
@@ -28,47 +47,22 @@ public class MyPlayerController : PlayerController
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject != gameObject)
             {
-                if (hit.collider.gameObject != gameObject && hit.collider.gameObject.GetComponent<PlayerController>())
+                if (hit.collider.gameObject.GetComponent<PlayerController>())
                 {
-                    StateInfo info = new StateInfo();
-                    info.State = ObjectState.Moving;
-                    info.Position = new SVector3();
-                    info.Position.X = transform.position.x;
-                    info.Position.Y = transform.position.y;
-                    info.Position.Z = transform.position.z;
-                    info.Destination = new SVector3();
-                    info.Destination.X = hit.collider.gameObject.transform.position.x;
-                    info.Destination.Y = hit.collider.gameObject.transform.position.y;
-                    info.Destination.Z = hit.collider.gameObject.transform.position.z;
-                    info.TargetId = hit.collider.gameObject.GetComponent<BaseController>().Id;
-
-                    StateInfo = info;
-
-                    SendStatePacket();
+                    SetStateInfo(ObjectState.Moving, transform.position, hit.collider.gameObject.transform.position, hit.collider.gameObject, () => { SendStatePacket(); });
                 }
                 else
                 {
-                    StateInfo info = new StateInfo();
-                    info.State = ObjectState.Moving;
-                    info.Position = new SVector3();
-                    info.Position.X = transform.position.x;
-                    info.Position.Y = transform.position.y;
-                    info.Position.Z = transform.position.z;
-                    info.Destination = new SVector3();
-                    info.Destination.X = hit.point.x;
-                    info.Destination.Y = hit.point.y;
-                    info.Destination.Z = hit.point.z;
-                    info.TargetId = -1;
-
-                    StateInfo = info;
-
-                    SendStatePacket();
+                    SetStateInfo(ObjectState.Moving, transform.position, hit.point, target: null, () => { SendStatePacket(); });
                 }
             }
         }
     }
+
+    private float movingPacketTimer = 0.0f;
+    private const float MOVINGPACKET_DELAY = 0.5f;
 
     protected override void UpdateMoving()
     {
@@ -79,21 +73,7 @@ public class MyPlayerController : PlayerController
             float distanceToTarget = Vector3.Distance(transform.position, Destination);
             if (distanceToTarget <= ARRIVAL_THRESHOLD)
             {
-                StateInfo info = new StateInfo();
-                info.State = ObjectState.Idle;
-                info.Position = new SVector3();
-                info.Position.X = transform.position.x;
-                info.Position.Y = transform.position.y;
-                info.Position.Z = transform.position.z;
-                info.Destination = new SVector3();
-                info.Destination.X = transform.position.x;
-                info.Destination.Y = transform.position.y;
-                info.Destination.Z = transform.position.z;
-                info.TargetId = -1;
-
-                StateInfo = info;
-
-                SendStatePacket();
+                SetStateInfo(ObjectState.Idle, transform.position, transform.position, target: null, () => { SendStatePacket(); });
             }
         }
         else
@@ -101,21 +81,16 @@ public class MyPlayerController : PlayerController
             float distanceToTarget = Vector3.Distance(transform.position, Target.transform.position);
             if (distanceToTarget <= ATTACK_RANGE)
             {
-                StateInfo info = new StateInfo();
-                info.State = ObjectState.Attack;
-                info.Position = new SVector3();
-                info.Position.X = transform.position.x;
-                info.Position.Y = transform.position.y;
-                info.Position.Z = transform.position.z;
-                info.Destination = new SVector3();
-                info.Destination.X = transform.position.x;
-                info.Destination.Y = transform.position.y;
-                info.Destination.Z = transform.position.z;
-                info.TargetId = Target.GetComponent<BaseController>().Id;
-
-                StateInfo = info;
-
-                SendStatePacket();
+                SetStateInfo(ObjectState.Attack, transform.position, transform.position, Target, () => { SendStatePacket(); });
+            }
+            else
+            {
+                movingPacketTimer += Time.deltaTime;
+                if (movingPacketTimer > MOVINGPACKET_DELAY)
+                {
+                    movingPacketTimer = 0.0f;
+                    SetStateInfo(ObjectState.Moving, transform.position, Target.transform.position, Target, () => { SendStatePacket(); });
+                }
             }
         }
     }
@@ -126,42 +101,14 @@ public class MyPlayerController : PlayerController
 
         if (Target == null)
         {
-            StateInfo info = new StateInfo();
-            info.State = ObjectState.Idle;
-            info.Position = new SVector3();
-            info.Position.X = transform.position.x;
-            info.Position.Y = transform.position.y;
-            info.Position.Z = transform.position.z;
-            info.Destination = new SVector3();
-            info.Destination.X = transform.position.x;
-            info.Destination.Y = transform.position.y;
-            info.Destination.Z = transform.position.z;
-            info.TargetId = -1;
-
-            StateInfo = info;
-
-            SendStatePacket();
+            SetStateInfo(ObjectState.Idle, transform.position, transform.position, target: null, () => { SendStatePacket(); });
         }
         else
         {
             float distanceToTarget = Vector3.Distance(transform.position, Target.transform.position);
             if (distanceToTarget > ATTACK_RANGE)
             {
-                StateInfo info = new StateInfo();
-                info.State = ObjectState.Moving;
-                info.Position = new SVector3();
-                info.Position.X = transform.position.x;
-                info.Position.Y = transform.position.y;
-                info.Position.Z = transform.position.z;
-                info.Destination = new SVector3();
-                info.Destination.X = Target.transform.position.x;
-                info.Destination.Y = Target.transform.position.y;
-                info.Destination.Z = Target.transform.position.z;
-                info.TargetId = Target.GetComponent<BaseController>().Id;
-
-                StateInfo = info;
-
-                SendStatePacket();
+                SetStateInfo(ObjectState.Moving, transform.position, Target.transform.position, Target, () => { SendStatePacket(); });
             }
         }
     }
@@ -174,9 +121,16 @@ public class MyPlayerController : PlayerController
         Managers.Network.Send(statePacket);
     }
 
+    private void SendNormalHitPacket()
+    {
+        C_NormalHit normalHitPacket = new C_NormalHit();
+        Managers.Network.Send(normalHitPacket);
+    }
+
     #region Animation Event
     public override void Attack()
     {
+        SendNormalHitPacket();
     }
     #endregion
 }

@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "qVargYUTNGsGgFQ79503gYvDDhGRtsjWMnBEqagx7Fp0Hj0OzT44ElEFqnoiXTEa/11+crrXIX1d/dwV+zZH0Q==",
+  "dgSpecHash": "1tUYWWETzbJ1lHDl+5uvUXBQJGXigDwe7sHmLXlqBw1cTTzde1+fjcycscXBMKDyaNunOvqNtliDImreLmeRxQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\PC\\Documents\\PORTFOLIO_SYNC\\Server\\Server\\Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\google.protobuf\\3.24.2\\google.protobuf.3.24.2.nupkg.sha512",
+    "C:\\Users\\PC\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512"
   ],

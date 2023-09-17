@@ -36,13 +36,16 @@ namespace Server
 			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
 			Console.WriteLine("Listening...");
 
-			//FlushRoom();
-			JobTimer.Instance.Push(FlushRoom);
+            //FlushRoom();
+            //JobTimer.Instance.Push(FlushRoom);
 
-			while (true)
-			{
-				JobTimer.Instance.Flush();
-			}
-		}
+            // TODO
+            while (true)
+            {
+                //JobTimer.Instance.Flush();
+                RoomManager.Instance.Find(1).Update();
+                Thread.Sleep(100);
+            }
+        }
 	}
 }

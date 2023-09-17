@@ -10,29 +10,48 @@ public class ObjectManager
 
     private Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
 
-    public void Add(PlayerInfo info, bool isMyPlayer = false)
+    public void Add(ObjectInfo info, bool isMyPlayer = false)
     {
-        if (isMyPlayer)
-        {
-            GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/MyPlayer");
-            gameObject.name = info.Name;
-            _objects.Add(info.PlayerId, gameObject);
+        ObjectType type = GetObjectTypeById(info.ObjectId);
 
-            MyPlayerController = gameObject.GetComponent<MyPlayerController>();
-            MyPlayerController.Id = info.PlayerId;
-            MyPlayerController.StateInfo = info.StatInfo;
-            MyPlayerController.transform.position = new Vector3(info.StatInfo.Position.X, info.StatInfo.Position.Y, info.StatInfo.Position.Z);
-        }
-        else
-        {
-            GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/Player");
-            gameObject.name = info.Name;
-            _objects.Add(info.PlayerId, gameObject);
+        switch (type)
+        { 
+            case ObjectType.Player:
+                {
+                    if (isMyPlayer)
+                    {
+                        GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/MyPlayer");
+                        gameObject.name = info.Name;
+                        _objects.Add(info.ObjectId, gameObject);
 
-            PlayerController playerController = gameObject.GetComponent<PlayerController>();
-            playerController.Id = info.PlayerId;
-            playerController.StateInfo = info.StatInfo;
-            playerController.transform.position = new Vector3(info.StatInfo.Position.X, info.StatInfo.Position.Y, info.StatInfo.Position.Z);
+                        MyPlayerController = gameObject.GetComponent<MyPlayerController>();
+                        MyPlayerController.Id = info.ObjectId;
+                        MyPlayerController.StateInfo = info.StateInfo;
+                        MyPlayerController.transform.position = new Vector3(info.StateInfo.Position.X, info.StateInfo.Position.Y, info.StateInfo.Position.Z);
+                    }
+                    else
+                    {
+                        GameObject gameObject = Managers.Resource.Instantiate("Objects/Player/Player");
+                        gameObject.name = info.Name;
+                        _objects.Add(info.ObjectId, gameObject);
+
+                        PlayerController playerController = gameObject.GetComponent<PlayerController>();
+                        playerController.Id = info.ObjectId;
+                        playerController.StateInfo = info.StateInfo;
+                        playerController.transform.position = new Vector3(info.StateInfo.Position.X, info.StateInfo.Position.Y, info.StateInfo.Position.Z);
+                    }
+                }
+                break;
+
+            case ObjectType.Monster:
+                {
+                }
+                break;
+
+            case ObjectType.Projectile:
+                {
+                }
+                break;
         }
     }
 
@@ -57,6 +76,12 @@ public class ObjectManager
 
         _objects.Remove(id);
         Managers.Resource.Destroy(gameObject);
+    }
+
+    public ObjectType GetObjectTypeById(int objectId)
+    {
+        int type = (objectId >> 24) & 0x7F;
+        return (ObjectType)type;
     }
 
     public GameObject FindById(int id)

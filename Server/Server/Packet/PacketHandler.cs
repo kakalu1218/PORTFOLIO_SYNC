@@ -28,4 +28,24 @@ public class PacketHandler
 
         room.HandleState(myPlayer, statePacket);
     }
+
+    public static void C_NormalHitHandler(PacketSession session, IMessage packet)
+    { 
+        C_NormalHit normalHitPacket = packet as C_NormalHit;
+        ClientSession clientSession= session as ClientSession;
+
+         Player myPlayer = clientSession.MyPlayer;
+        if(myPlayer == null )
+        {
+            return;
+        }
+
+        GameRoom room = myPlayer.Room;
+        if (room == null)
+        {
+            return;
+        }
+
+        room.HandleNormalHit(myPlayer, normalHitPacket);
+    }
 }

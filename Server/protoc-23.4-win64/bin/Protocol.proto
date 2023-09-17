@@ -12,6 +12,8 @@ enum MsgId
 	S_DESPAWN = 3;
 	C_STATE = 4;
 	S_STATE = 5;
+	C_NORMAL_HIT = 6;
+	S_NORMAL_HIT = 7;
 }
 
 enum ObjectState
@@ -20,6 +22,14 @@ enum ObjectState
 	MOVING = 1;
 	ATTACK = 2;
 	SKILL = 3;
+}
+
+enum ObjectType
+{
+	NONE = 0;
+	PLAYER = 1;
+	MONSTER = 2;
+	PROJECTILE = 3;
 }
 
 message SVector3
@@ -37,11 +47,11 @@ message StateInfo
 	int32 targetId = 4;
 }
 
-message PlayerInfo
+message ObjectInfo
 {
-	int32 playerId = 1;
+	int32 objectId = 1;
 	string name = 2;
-	StateInfo statInfo = 3;
+	StateInfo stateInfo = 3;
 }
 
 message SkillInfo
@@ -51,7 +61,7 @@ message SkillInfo
 
 message S_EnterGame
 {
-	PlayerInfo player = 1;
+	ObjectInfo player = 1;
 }
 
 message S_LeaveGame
@@ -60,12 +70,12 @@ message S_LeaveGame
 
 message S_Spawn
 {
-	repeated PlayerInfo players = 1;
+	repeated ObjectInfo objects = 1;
 }
 
 message S_Despawn
 {
-	repeated int32 playerIds = 1;
+	repeated int32 objectIds = 1;
 }
 
 message C_State
@@ -75,6 +85,15 @@ message C_State
 
 message S_State
 {
-	int32 playerId = 1;
+	int32 objectId = 1;
 	StateInfo statInfo = 2;
+}
+
+message C_NormalHit
+{
+}
+
+message S_NormalHit
+{
+	int32 objectId = 1;
 }

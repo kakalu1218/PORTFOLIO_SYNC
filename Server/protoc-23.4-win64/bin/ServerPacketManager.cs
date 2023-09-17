@@ -24,7 +24,9 @@ class PacketManager
 	public void Register()
 	{		
 		_onRecv.Add((ushort)MsgId.CState, MakePacket<C_State>);
-		_handler.Add((ushort)MsgId.CState, PacketHandler.C_StateHandler);
+		_handler.Add((ushort)MsgId.CState, PacketHandler.C_StateHandler);		
+		_onRecv.Add((ushort)MsgId.CNormalHit, MakePacket<C_NormalHit>);
+		_handler.Add((ushort)MsgId.CNormalHit, PacketHandler.C_NormalHitHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

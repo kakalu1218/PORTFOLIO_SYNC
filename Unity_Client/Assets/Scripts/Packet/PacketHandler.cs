@@ -25,9 +25,9 @@ class PacketHandler
     {
         S_Spawn spawnPacket = packet as S_Spawn;
 
-        foreach (PlayerInfo player in spawnPacket.Players)
+        foreach (ObjectInfo obj in spawnPacket.Objects)
         {
-            Managers.Object.Add(player, isMyPlayer: false);
+            Managers.Object.Add(obj, isMyPlayer: false);
         }
     }
 
@@ -35,7 +35,7 @@ class PacketHandler
     {
         S_Despawn despawnPacket = packet as S_Despawn;
 
-        foreach (int id in despawnPacket.PlayerIds)
+        foreach (int id in despawnPacket.ObjectIds)
         {
             Managers.Object.Remove(id);
         }
@@ -45,7 +45,7 @@ class PacketHandler
     {
         S_State statePacket = packet as S_State;
 
-        GameObject gameObject =Managers.Object.FindById(statePacket.PlayerId);
+        GameObject gameObject =Managers.Object.FindById(statePacket.ObjectId);
         if (gameObject == null)
         {
             return;
@@ -58,5 +58,12 @@ class PacketHandler
         }
 
         controller.StateInfo = statePacket.StatInfo;
+    }
+
+    public static void S_NormalHitHandler(PacketSession session, IMessage packet)
+    {
+        S_NormalHit normalHitPacket = packet as S_NormalHit;
+
+        Debug.Log($"{normalHitPacket.ObjectId}");
     }
 }

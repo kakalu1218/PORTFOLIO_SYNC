@@ -37,20 +37,21 @@ namespace Server
             Console.WriteLine($"OnConnected : {endPoint}");
 
             // PROTO Test
-            MyPlayer = PlayerManager.Instance.Add();
+            MyPlayer = ObjectManager.Instance.Add<Player>();
             {
-                MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}";
-                MyPlayer.Info.StatInfo = new StateInfo();
-                MyPlayer.Info.StatInfo.State = ObjectState.Idle;
-                MyPlayer.Info.StatInfo.Position = new SVector3();
-                MyPlayer.Info.StatInfo.Position.X = 0.0f;
-                MyPlayer.Info.StatInfo.Position.Y = 0.0f;
-                MyPlayer.Info.StatInfo.Position.Z = 0.0f;
-                MyPlayer.Info.StatInfo.Destination = new SVector3();
-                MyPlayer.Info.StatInfo.Destination.X = 0.0f;
-                MyPlayer.Info.StatInfo.Destination.Y = 0.0f;
-                MyPlayer.Info.StatInfo.Destination.Z = 0.0f;
-                MyPlayer.Info.StatInfo.TargetId = -1;
+                MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
+
+                MyPlayer.Info.StateInfo = new StateInfo();
+                MyPlayer.Info.StateInfo.State = ObjectState.Idle;
+                MyPlayer.Info.StateInfo.Position = new SVector3();
+                MyPlayer.Info.StateInfo.Position.X = 0.0f;
+                MyPlayer.Info.StateInfo.Position.Y = 0.0f;
+                MyPlayer.Info.StateInfo.Position.Z = 0.0f;
+                MyPlayer.Info.StateInfo.Destination = new SVector3();
+                MyPlayer.Info.StateInfo.Destination.X = 0.0f;
+                MyPlayer.Info.StateInfo.Destination.Y = 0.0f;
+                MyPlayer.Info.StateInfo.Destination.Z = 0.0f;
+                MyPlayer.Info.StateInfo.TargetId = -1;
                 MyPlayer.Session = this;
             }
 
@@ -64,7 +65,7 @@ namespace Server
 
         public override void OnDisconnected(EndPoint endPoint)
         {
-            RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.PlayerId);
+            RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.ObjectId);
 
             SessionManager.Instance.Remove(this);
 
