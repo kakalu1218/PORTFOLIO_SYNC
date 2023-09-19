@@ -33,8 +33,8 @@ class PacketManager
 		_handler.Add((ushort)MsgId.SDespawn, PacketHandler.S_DespawnHandler);		
 		_onRecv.Add((ushort)MsgId.SState, MakePacket<S_State>);
 		_handler.Add((ushort)MsgId.SState, PacketHandler.S_StateHandler);		
-		_onRecv.Add((ushort)MsgId.SNormalHit, MakePacket<S_NormalHit>);
-		_handler.Add((ushort)MsgId.SNormalHit, PacketHandler.S_NormalHitHandler);
+		_onRecv.Add((ushort)MsgId.SChangeHp, MakePacket<S_ChangeHp>);
+		_handler.Add((ushort)MsgId.SChangeHp, PacketHandler.S_ChangeHpHandler);
 	}
 
 	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)

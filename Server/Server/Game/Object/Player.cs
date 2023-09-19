@@ -13,5 +13,15 @@ namespace Server.Game
         { 
             ObjectType = ObjectType.Player;
         }
+
+        public override void OnDamaged(GameObject instigator, int damage)
+        {
+            base.OnDamaged(instigator, damage);
+        }
+
+        public override void OnDead(GameObject instigator)
+        {
+            base.OnDead(instigator);
+        }
     }
 }

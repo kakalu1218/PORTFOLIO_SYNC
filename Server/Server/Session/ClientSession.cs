@@ -10,6 +10,7 @@ using Google.Protobuf.Protocol;
 using Google.Protobuf;
 using Server.Game;
 using System.Numerics;
+using Server.Data;
 
 namespace Server
 {
@@ -52,6 +53,11 @@ namespace Server
                 MyPlayer.Info.StateInfo.Destination.Y = 0.0f;
                 MyPlayer.Info.StateInfo.Destination.Z = 0.0f;
                 MyPlayer.Info.StateInfo.TargetId = -1;
+
+                StatInfo statInfo = null;
+                DataManager.StatDict.TryGetValue(1, out statInfo);
+                MyPlayer.StatInfo.MergeFrom(statInfo);
+
                 MyPlayer.Session = this;
             }
 

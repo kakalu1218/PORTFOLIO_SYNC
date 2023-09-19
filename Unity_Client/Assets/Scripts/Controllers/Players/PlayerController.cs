@@ -8,6 +8,8 @@ public class PlayerController : BaseController
     protected override void Init()
     {
         base.Init();
+
+        AddHpBar();
     }
 
     protected override void FadeAnimation()

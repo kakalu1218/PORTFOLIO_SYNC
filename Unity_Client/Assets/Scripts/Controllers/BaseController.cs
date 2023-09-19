@@ -95,6 +95,45 @@ public class BaseController : MonoBehaviour
         }
     }
 
+    private StatInfo _statInfo = new StatInfo();
+    public StatInfo StatInfo
+    {
+        get
+        {
+            return _statInfo; 
+        }
+        
+        set
+        {
+            if (_statInfo.Equals(value))
+            { 
+                return;
+            }
+
+            _statInfo.Hp = value.Hp;
+            _statInfo.MaxHp = value.MaxHp;
+            _statInfo.Attack = value.Attack;
+            _statInfo.TotalExp = value.TotalExp;
+
+            UpdateHpBar();
+        }
+    }
+
+    public int Hp
+    {
+        get 
+        { 
+            return StatInfo.Hp; 
+        }
+
+        set
+        {
+            StatInfo.Hp = value;
+
+            UpdateHpBar();
+        }
+    }
+
     protected const float ARRIVAL_THRESHOLD = 0.5f;
     protected const float ATTACK_RANGE = 3.0f;
 
@@ -134,6 +173,33 @@ public class BaseController : MonoBehaviour
                 UpdateSkill();
                 break;
         }
+    }
+
+    private HpBar _hpBar;
+
+    private void UpdateHpBar()
+    {
+        if (_hpBar == null)
+        { 
+            return;
+        }
+
+        float ratio = 0.0f;
+        if (StatInfo.MaxHp > 0)
+        { 
+            ratio = ((float)Hp) / StatInfo.MaxHp;
+        }
+
+        _hpBar.SetHpBar(ratio);
+    }
+
+    protected void AddHpBar()
+    {
+        GameObject gameObject = Managers.Resource.Instantiate("UI/WorldSpace/HpBar", transform);
+        gameObject.transform.localPosition = new Vector3(0, 0.5f, 0);
+        gameObject.name = "HpBar";
+        _hpBar = gameObject.GetComponent<HpBar>();
+        UpdateHpBar();
     }
 
     protected virtual void UpdateIdle()

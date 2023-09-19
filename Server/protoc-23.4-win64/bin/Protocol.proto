@@ -13,7 +13,7 @@ enum MsgId
 	C_STATE = 4;
 	S_STATE = 5;
 	C_NORMAL_HIT = 6;
-	S_NORMAL_HIT = 7;
+	S_CHANGE_HP = 7;
 }
 
 enum ObjectState
@@ -22,6 +22,7 @@ enum ObjectState
 	MOVING = 1;
 	ATTACK = 2;
 	SKILL = 3;
+	DEAD = 4;
 }
 
 enum ObjectType
@@ -47,16 +48,21 @@ message StateInfo
 	int32 targetId = 4;
 }
 
+message StatInfo
+{
+	int32 level = 1;
+	int32 hp = 2;
+	int32 maxHp = 3;
+	int32 attack = 4;
+	int32 totalExp = 5;
+}
+
 message ObjectInfo
 {
 	int32 objectId = 1;
 	string name = 2;
 	StateInfo stateInfo = 3;
-}
-
-message SkillInfo
-{
-	int32 skillId = 1;
+	StatInfo statInfo = 4;
 }
 
 message S_EnterGame
@@ -93,7 +99,8 @@ message C_NormalHit
 {
 }
 
-message S_NormalHit
+message S_ChangeHp
 {
 	int32 objectId = 1;
+	int32 hp = 2;
 }

@@ -60,10 +60,22 @@ class PacketHandler
         controller.StateInfo = statePacket.StatInfo;
     }
 
-    public static void S_NormalHitHandler(PacketSession session, IMessage packet)
+    public static void S_ChangeHpHandler(PacketSession session, IMessage packet)
     {
-        S_NormalHit normalHitPacket = packet as S_NormalHit;
+        S_ChangeHp changeHpPacket = packet as S_ChangeHp;
 
-        Debug.Log($"{normalHitPacket.ObjectId}");
+        GameObject gameObject = Managers.Object.FindById(changeHpPacket.ObjectId);
+        if (gameObject == null)
+        { 
+            return;
+        }
+
+        BaseController controller = gameObject.GetComponent<BaseController>();
+        if (controller == null)
+        {
+            return;
+        }
+
+        controller.Hp = changeHpPacket.Hp;
     }
 }

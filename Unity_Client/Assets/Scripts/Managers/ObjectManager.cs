@@ -27,6 +27,7 @@ public class ObjectManager
                         MyPlayerController = gameObject.GetComponent<MyPlayerController>();
                         MyPlayerController.Id = info.ObjectId;
                         MyPlayerController.StateInfo = info.StateInfo;
+                        MyPlayerController.StatInfo = info.StatInfo;
                         MyPlayerController.transform.position = new Vector3(info.StateInfo.Position.X, info.StateInfo.Position.Y, info.StateInfo.Position.Z);
                     }
                     else
@@ -38,6 +39,7 @@ public class ObjectManager
                         PlayerController playerController = gameObject.GetComponent<PlayerController>();
                         playerController.Id = info.ObjectId;
                         playerController.StateInfo = info.StateInfo;
+                        playerController.StatInfo = info.StatInfo;
                         playerController.transform.position = new Vector3(info.StateInfo.Position.X, info.StateInfo.Position.Y, info.StateInfo.Position.Z);
                     }
                 }

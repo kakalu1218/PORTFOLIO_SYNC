@@ -193,14 +193,27 @@ namespace Server.Game
 
             lock (_lock)
             {
-                S_NormalHit resNormalHitPacket = new S_NormalHit();
-                resNormalHitPacket.ObjectId = myPlayer.Info.StateInfo.TargetId;
-
-                Broadcast(resNormalHitPacket);
+                if (myPlayer.Info.StateInfo.TargetId != -1)
+                {
+                    ObjectType targetType = ObjectManager.Instance.GetObjectTypeById(myPlayer.Info.StateInfo.TargetId);
+                    switch (targetType)
+                    {
+                        case ObjectType.Player:
+                            {
+                                Player target = null;
+                                if (_players.TryGetValue(myPlayer.Info.StateInfo.TargetId, out target))
+                                {
+                                    // TODO : 공격 거리 Check..
+                                    target.OnDamaged(myPlayer, myPlayer.StatInfo.Attack);
+                                }
+                            }
+                            break;
+                    }
+                }
             }
         }
 
-        private void Broadcast(IMessage packet)
+        public void Broadcast(IMessage packet)
         {
             lock (_lock)
             {
