@@ -18,7 +18,7 @@ class PacketHandler
     {
         S_LeaveGame leaveGamePacket = packet as S_LeaveGame;
 
-        Managers.Object.RemoveMyPlayer();
+        Managers.Object.RemoveAll();
     }
 
     public static void S_SpawnHandler(PacketSession session, IMessage packet)
@@ -77,5 +77,24 @@ class PacketHandler
         }
 
         controller.Hp = changeHpPacket.Hp;
+    }
+
+    public static void S_DieHandler(PacketSession session, IMessage packet)
+    {
+        S_Die diePacket = packet as S_Die;
+
+        GameObject gameObject = Managers.Object.FindById(diePacket.ObjectId);
+        if (gameObject == null)
+        {
+            return;
+        }
+
+        BaseController controller = gameObject.GetComponent<BaseController>();
+        if (controller == null)
+        {
+            return;
+        }
+
+
     }
 }

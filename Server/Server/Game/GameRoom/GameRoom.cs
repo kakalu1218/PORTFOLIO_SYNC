@@ -61,6 +61,17 @@ namespace Server.Game
                                         spawnPacket.Objects.Add(p.Info);
                                     }
                                 }
+
+                                foreach (Monster monster in _monsters.Values)
+                                { 
+                                    spawnPacket.Objects.Add(monster.Info);
+                                }
+
+                                foreach (Projectile projectile in _projectiles.Values)
+                                { 
+                                    spawnPacket.Objects.Add(projectile.Info);
+                                }
+
                                 player.Session.Send(spawnPacket);
                             }
                         }
@@ -87,11 +98,11 @@ namespace Server.Game
                 {
                     S_Spawn spawnPacket = new S_Spawn();
                     spawnPacket.Objects.Add(gameObject.Info);
-                    foreach (Player p in _players.Values)
+                    foreach (Player player in _players.Values)
                     {
-                        if (p.Id != gameObject.Id)
+                        if (player.Id != gameObject.Id)
                         {
-                            p.Session.Send(spawnPacket);
+                            player.Session.Send(spawnPacket);
                         }
                     }
                 }
@@ -204,7 +215,7 @@ namespace Server.Game
                                 if (_players.TryGetValue(myPlayer.Info.StateInfo.TargetId, out target))
                                 {
                                     // TODO : 공격 거리 Check..
-                                    target.OnDamaged(myPlayer, myPlayer.StatInfo.Attack);
+                                    target.OnDamaged(myPlayer, myPlayer.Info.StatInfo.Attack);
                                 }
                             }
                             break;

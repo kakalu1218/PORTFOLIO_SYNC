@@ -57,14 +57,9 @@ public class ObjectManager
         }
     }
 
-    public void RemoveMyPlayer()
+    public void RemoveAll()
     {
-        if (MyPlayerController != null)
-        {
-            return;
-        }
-
-        Remove(MyPlayerController.Id);
+        Clear();
         MyPlayerController = null;
     }
 

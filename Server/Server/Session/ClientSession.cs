@@ -56,7 +56,7 @@ namespace Server
 
                 StatInfo statInfo = null;
                 DataManager.StatDict.TryGetValue(1, out statInfo);
-                MyPlayer.StatInfo.MergeFrom(statInfo);
+                MyPlayer.Info.StatInfo.MergeFrom(statInfo);
 
                 MyPlayer.Session = this;
             }

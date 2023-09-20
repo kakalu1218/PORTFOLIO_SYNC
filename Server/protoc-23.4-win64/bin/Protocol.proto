@@ -14,6 +14,7 @@ enum MsgId
 	S_STATE = 5;
 	C_NORMAL_HIT = 6;
 	S_CHANGE_HP = 7;
+	S_DIE = 8;
 }
 
 enum ObjectState
@@ -103,4 +104,10 @@ message S_ChangeHp
 {
 	int32 objectId = 1;
 	int32 hp = 2;
+}
+
+message S_Die
+{
+	int32 objectId = 1;
+	int32 instigatorId = 2;
 }
