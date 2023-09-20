@@ -9,4 +9,9 @@ public class Define
         Unknown,
         Game,
     }
+
+    public enum UIEvent
+    {
+        Click,
+    }
 }

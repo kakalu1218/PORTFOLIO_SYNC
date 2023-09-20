@@ -190,13 +190,13 @@ public class BaseController : MonoBehaviour
             ratio = ((float)Hp) / StatInfo.MaxHp;
         }
 
-        _hpBar.SetHpBar(ratio);
+        _hpBar.SetHpBarRatio(ratio);
     }
 
     protected void AddHpBar()
     {
         GameObject gameObject = Managers.Resource.Instantiate("UI/WorldSpace/HpBar", transform);
-        gameObject.transform.localPosition = new Vector3(0, 0.5f, 0);
+        gameObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         gameObject.name = "HpBar";
         _hpBar = gameObject.GetComponent<HpBar>();
         UpdateHpBar();

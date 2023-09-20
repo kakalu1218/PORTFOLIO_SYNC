@@ -13,12 +13,14 @@ public class Managers : MonoBehaviour
     private SceneManagerEx _scene = new SceneManagerEx();
     private PoolManager _pool = new PoolManager();
     private ResourceManager _resource = new ResourceManager();
+    private UIManager _ui = new UIManager();
 
     public static NetworkManager Network { get { return Instance._network; } }
     public static ObjectManager Object { get { return Instance._object; } }
     public static SceneManagerEx Scene { get { return Instance._scene; } }
     public static PoolManager Pool { get { return Instance._pool; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
+    public static UIManager UI { get { return Instance._ui; } }
     #endregion
 
     private void Start()

@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HpBar : MonoBehaviour
+public class HpBar : UI_Base
 {
-    [SerializeField] private Slider _hpBar = null;
+    private enum Sliders
+    {
+        Slider,
+    }
 
-    public void SetHpBar(float ratio)
+    public override void Init()
+    {
+        Bind<Slider>(typeof(Sliders));
+    }
+
+    private void FixedUpdate()
+    {
+        transform.forward = Camera.main.transform.forward;
+    }
+
+    public void SetHpBarRatio(float ratio)
     {
         ratio = Mathf.Clamp(ratio, 0, 1);
-        _hpBar.value = ratio;
+        GetSlider((int)Sliders.Slider).value = ratio;
     }
 }
