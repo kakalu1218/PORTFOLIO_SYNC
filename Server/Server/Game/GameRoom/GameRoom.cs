@@ -17,15 +17,37 @@ namespace Server.Game
         private Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
         private Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
+        public void Init()
+        {
+        }
+
         public void Update()
         {
             lock (_lock)
             {
+                foreach (Monster monster in _monsters.Values)
+                {
+                    monster.Update();
+                }
+
                 foreach (Projectile projectile in _projectiles.Values)
                 {
                     projectile.Update();
                 }
             }
+        }
+
+        public Player FindPlayer(Func<GameObject, bool> condition)
+        { 
+            foreach(Player player in _players.Values)
+            {
+                if (condition.Invoke(player))
+                { 
+                    return player;
+                }
+            }
+
+            return null;
         }
 
         public void EnterGame(GameObject gameObject)

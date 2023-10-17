@@ -24,6 +24,10 @@ namespace Server.Game
             }
         }
 
+        public virtual void Update()
+        { 
+        }
+
         public virtual void OnDamaged(GameObject instigator, int damage)
         {
             Info.StatInfo.Hp = Math.Max(Info.StatInfo.Hp - damage, 0);

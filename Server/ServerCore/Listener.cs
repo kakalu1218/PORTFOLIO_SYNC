@@ -37,8 +37,10 @@ namespace ServerCore
 
 			bool pending = _listenSocket.AcceptAsync(args);
 			if (pending == false)
-				OnAcceptCompleted(null, args);
-		}
+			{
+                OnAcceptCompleted(null, args);
+            }
+        }
 
 		void OnAcceptCompleted(object sender, SocketAsyncEventArgs args)
 		{
@@ -49,9 +51,12 @@ namespace ServerCore
 				session.OnConnected(args.AcceptSocket.RemoteEndPoint);
 			}
 			else
+			{ 
 				Console.WriteLine(args.SocketError.ToString());
+            }
 
-			RegisterAccept(args);
+			// 다시 한번 등록
+            RegisterAccept(args);
 		}
 	}
 }
